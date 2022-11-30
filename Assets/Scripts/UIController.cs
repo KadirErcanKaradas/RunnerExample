@@ -12,12 +12,21 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject StartPanel;
     [SerializeField] private GameObject InGamePanel;
 
-    private void Start()
+    private void OnEnable()
     {
-        manager = GameManager.Instance;   
-        
         GameEvent.Win += OpenWinPanel;
         GameEvent.Fail += OpenFailPanel;
+    }
+
+    private void OnDisable()
+    {
+        GameEvent.Win -= OpenWinPanel;
+        GameEvent.Fail = OpenFailPanel;
+    }
+
+    private void Start()
+    {
+        manager = GameManager.Instance;
     }
 
     public void TapToStartButton()

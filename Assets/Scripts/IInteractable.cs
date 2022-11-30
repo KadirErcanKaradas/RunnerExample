@@ -6,5 +6,4 @@ public interface IInteractable
 public interface IEnemy
 {
  void DestroyCube();
- void TimeSlowDown();
 }

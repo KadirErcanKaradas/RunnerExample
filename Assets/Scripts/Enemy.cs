@@ -25,25 +25,21 @@ public class Enemy : MonoBehaviour,IEnemy
         GameEvent.NotCollect();
         LoseSphere();
     }
-
-    public void TimeSlowDown()
-    {
-        GameManager.Instance.DoSlowMotion();
-    }
+    
     public void LoseSphere()
     {
-        float scale = transform.localScale.magnitude;
+        float scale = transform.GetChild(0).localScale.magnitude;
         if (counterNumber>1)
         {
             counterNumber--;
-            Vector3 enemyVec = transform.localScale;
-            transform.DOScale(new Vector3(enemyVec.x, enemyVec.y, enemyVec.z - scale/10), 0.1f);
+            Vector3 enemyVec = transform.GetChild(0).localScale;
+            transform.GetChild(0).DOScale(new Vector3(enemyVec.x, enemyVec.y, enemyVec.z - scale/10), 0.1f);
             counterText.text = counterNumber.ToString();
         }
         else if(counterNumber ==1)
         {
+            manager.speed = 5;
             gameObject.SetActive(false);
-            manager.isTimeNormal = true;
         }
     }
     
