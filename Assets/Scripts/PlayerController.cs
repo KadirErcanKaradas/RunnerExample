@@ -9,7 +9,8 @@ public class PlayerController : MonoBehaviour
 {
     private GameManager manager;
     private ObjectPool pool;
-    [SerializeField] private float speed = 5;
+    private Rigidbody rb;
+    //[SerializeField] private float speed = 5;
     
     [SerializeField] private TMP_Text counterText;
     [SerializeField] private int counterNumber;
@@ -17,18 +18,21 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         counterText.text = counterNumber.ToString();
+        rb = GetComponent<Rigidbody>();
     }
 
     private void OnEnable()
     {
         GameEvent.Collect += ScaleUp;
-        GameEvent.NotCollect += ScaleDown;
+        GameEvent.Obstacle += ScaleDown;
+        GameEvent.Expo += Explosion;
     }
 
     private void OnDisable()
     {
         GameEvent.Collect -= ScaleUp;
-        GameEvent.NotCollect -= ScaleDown;
+        GameEvent.Obstacle -= ScaleDown;
+        GameEvent.Expo -= Explosion;
     }
 
     private void Start()
@@ -41,8 +45,6 @@ public class PlayerController : MonoBehaviour
     {
         if (manager.GameStage == GameStage.Started)
             transform.Translate(Vector3.forward * manager.speed * Time.deltaTime);
-        
-        print(manager.speed);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -90,5 +92,12 @@ public class PlayerController : MonoBehaviour
             gameObject.SetActive(false);
             manager.speed = 0;
         }
+    }
+
+    private void Explosion()
+    {
+        print("Girdi");
+        manager.speed = 5;
+        rb.AddExplosionForce(10000,Vector3.forward, 500);
     }
 }

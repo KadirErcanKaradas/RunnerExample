@@ -38,10 +38,7 @@ public class ObjectPool : Singleton<ObjectPool>
 		{
 			ObjectPoolItemToPooledObject(i);
 		}
-
 	}
-
-
 	public GameObject GetPooledObject(int index)
 	{
 

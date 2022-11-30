@@ -4,43 +4,57 @@ using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Enemy : MonoBehaviour,IEnemy
 {
     private GameManager manager;
+    private BoxCollider boxCollider;
     [SerializeField] private TMP_Text counterText;
     [SerializeField] private int counterNumber;
     private void Awake()
     {
         counterText.text = counterNumber.ToString();
     }
+    
 
     private void Start()
     {
         manager = GameManager.Instance;
+        boxCollider = GetComponent<BoxCollider>();
     }
 
     public void DestroyCube()
     {
-        GameEvent.NotCollect();
+        GameEvent.Obstacle();
         LoseSphere();
     }
     
     public void LoseSphere()
     {
-        float scale = transform.GetChild(0).localScale.magnitude;
         if (counterNumber>1)
         {
             counterNumber--;
-            Vector3 enemyVec = transform.GetChild(0).localScale;
-            transform.GetChild(0).DOScale(new Vector3(enemyVec.x, enemyVec.y, enemyVec.z - scale/10), 0.1f);
             counterText.text = counterNumber.ToString();
         }
         else if(counterNumber ==1)
         {
-            manager.speed = 5;
-            gameObject.SetActive(false);
+            counterText.enabled = false;
+            manager.speed = 1;
+            Explosion();
         }
+    }
+
+    private void Explosion()
+    {
+        StartCoroutine(ExplosionTime());
+    }
+    private IEnumerator ExplosionTime()
+    {
+        boxCollider.enabled = false;
+        GameEvent.Expo();
+        yield return new WaitForSeconds(3f);
+        gameObject.SetActive(false);
     }
     
 }
