@@ -32,6 +32,7 @@ public class Obstacle : MonoBehaviour,IInteractable
         }
         else if(counterNumber ==1)
         {
+            GameEvent.Expo();
             boxCollider.enabled = false;
             counterText.enabled = false;
             Explosion();

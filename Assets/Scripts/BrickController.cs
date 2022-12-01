@@ -22,7 +22,6 @@ public class BrickController : Obstacle
         {
             transform.GetChild(i).GetComponent<Animator>().enabled = false;
         }
-        GameEvent.Expo();
         yield return new WaitForSeconds(3f);
         gameObject.SetActive(false);
     }

@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     private GameManager manager;
     private ObjectPool pool;
     private Rigidbody rb;
+    public Vector3 rotateAmount;
     //[SerializeField] private float speed = 5;
     
     [SerializeField] private TMP_Text counterText;
@@ -40,13 +41,15 @@ public class PlayerController : MonoBehaviour
     {
         manager = GameManager.Instance;
         pool = ObjectPool.Instance;
-        transform.GetChild(0).DORotate(new Vector3(0,360,0),2 * 0.5f, RotateMode.FastBeyond360).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Restart);
     }
 
     private void Update()
     {
         if (manager.GameStage == GameStage.Started)
+        {
             transform.Translate(Vector3.forward * manager.speed * Time.deltaTime);
+            transform.GetChild(0).Rotate(rotateAmount * Time.deltaTime);
+        }
     }
 
     private void OnTriggerEnter(Collider other)

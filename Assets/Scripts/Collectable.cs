@@ -1,16 +1,15 @@
+using System;
 using UnityEngine;
 using DG.Tweening;
 
 public class Collectable : MonoBehaviour,IInteractable
 {
-    private void OnEnable()
+    [SerializeField] private Vector3 rotateAmount;
+    [SerializeField] private float speed;
+    
+    private void Update()
     {
-        GameEvent.GameStart += Jump;
-    }
-
-    private void OnDisable()
-    {
-        GameEvent.GameStart -= Jump;
+        Jump();
     }
 
     public void Interact()
@@ -28,8 +27,9 @@ public class Collectable : MonoBehaviour,IInteractable
     {
         if (gameObject.activeInHierarchy)
         {
-            transform.DOMoveY(1, 0.5f).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
-            transform.DORotate(new Vector3(0,360,0),2 * 0.5f, RotateMode.FastBeyond360).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Restart);
+            transform.Rotate(rotateAmount * Time.deltaTime );
+            float y = Mathf.PingPong(Time.time * speed, 1);
+            transform.localPosition = new Vector3(transform.localPosition.x, y, transform.localPosition.z);
         }
     }
 }

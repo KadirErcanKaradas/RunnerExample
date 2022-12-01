@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIController : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class UIController : MonoBehaviour
     private void OnDisable()
     {
         GameEvent.Win -= OpenWinPanel;
-        GameEvent.Fail = OpenFailPanel;
+        GameEvent.Fail -= OpenFailPanel;
     }
 
     private void Start()
@@ -34,7 +35,7 @@ public class UIController : MonoBehaviour
         StartPanel.SetActive(false);
         InGamePanel.SetActive(true);
         manager.SetGameStage(GameStage.Started);
-        GameEvent.GameStart();
+        //GameEvent.GameStart();
     }
     private void OpenWinPanel()
     {
@@ -47,5 +48,10 @@ public class UIController : MonoBehaviour
         FailPanel.SetActive(true);
         InGamePanel.SetActive(false);
         manager.SetGameStage(GameStage.Fail);
+    }
+
+    public void RetryButton()
+    {
+        SceneManager.LoadScene(0);
     }
 }
