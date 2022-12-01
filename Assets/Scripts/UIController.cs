@@ -34,6 +34,7 @@ public class UIController : MonoBehaviour
         StartPanel.SetActive(false);
         InGamePanel.SetActive(true);
         manager.SetGameStage(GameStage.Started);
+        GameEvent.GameStart();
     }
     private void OpenWinPanel()
     {

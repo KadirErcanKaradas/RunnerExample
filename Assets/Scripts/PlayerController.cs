@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     
     [SerializeField] private TMP_Text counterText;
     [SerializeField] private int counterNumber;
+    [SerializeField] private ParticleSystem explosionParticle;
 
     private void Awake()
     {
@@ -25,20 +26,21 @@ public class PlayerController : MonoBehaviour
     {
         GameEvent.Collect += ScaleUp;
         GameEvent.Obstacle += ScaleDown;
-        GameEvent.Expo += Explosion;
+        GameEvent.Expo += ExplosionParticle;
     }
 
     private void OnDisable()
     {
         GameEvent.Collect -= ScaleUp;
         GameEvent.Obstacle -= ScaleDown;
-        GameEvent.Expo -= Explosion;
+        GameEvent.Expo -= ExplosionParticle;
     }
 
     private void Start()
     {
         manager = GameManager.Instance;
         pool = ObjectPool.Instance;
+        transform.GetChild(0).DORotate(new Vector3(0,360,0),2 * 0.5f, RotateMode.FastBeyond360).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Restart);
     }
 
     private void Update()
@@ -56,9 +58,9 @@ public class PlayerController : MonoBehaviour
     
     private void OnTriggerStay(Collider other)
     {
-        var interactable = other.GetComponent<IEnemy>();
-        if(interactable == null) return;
-        interactable.DestroyCube();
+        var interactable = other.GetComponent<IInteractable>();
+        if (interactable != null)
+            interactable.Interact();
     }
     
     private void ScaleUp()
@@ -75,9 +77,6 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 negoVec = new Vector3(0.02f, 0.02f, 0.02f);
         Vector3 playerVec = transform.localScale;
-        GameObject obj = pool.GetPooledObject(0);
-        obj.SetActive(true);
-        obj.transform.localPosition = transform.position;
         transform.DOScale(new Vector3(playerVec.x - negoVec.x, playerVec.y - negoVec.y, playerVec.z - negoVec.z), 0.1f);
         transform.position -= new Vector3(0, 0.01f, 0); 
         manager.speed = 1f;
@@ -94,10 +93,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void Explosion()
+    private void ExplosionParticle()
     {
-        print("Girdi");
+        explosionParticle.gameObject.SetActive(true);
+        explosionParticle.Play();
         manager.speed = 5;
-        rb.AddExplosionForce(10000,Vector3.forward, 500);
     }
 }

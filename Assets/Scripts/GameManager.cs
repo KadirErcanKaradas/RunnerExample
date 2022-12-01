@@ -17,5 +17,5 @@ public class GameManager : Singleton<GameManager>
 }
 public enum GameStage
 {
-    NotLoaded, Loaded, Started, Win,WinCube, Fail,FailFall
+    NotLoaded, Loaded, Started, Win,WinCube, Fail,FailFall, Fight
 }
