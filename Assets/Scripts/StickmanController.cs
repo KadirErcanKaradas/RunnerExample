@@ -14,6 +14,4 @@ public class StickmanController : MonoBehaviour
         int randomNumber = Random.Range(1, 4);
         animator.SetBool(randomNumber.ToString(),true);
     }
-
-    
 }

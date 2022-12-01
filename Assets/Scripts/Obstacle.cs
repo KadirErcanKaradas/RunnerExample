@@ -6,7 +6,7 @@ using UnityEngine;
 public class Obstacle : MonoBehaviour,IInteractable
 {
     private GameManager manager;
-    private BoxCollider boxCollider;
+    public BoxCollider boxCollider;
     [SerializeField] private TMP_Text counterText;
     [SerializeField] private int counterNumber;
     private void Awake()
@@ -32,53 +32,15 @@ public class Obstacle : MonoBehaviour,IInteractable
         }
         else if(counterNumber ==1)
         {
+            boxCollider.enabled = false;
             counterText.enabled = false;
-            manager.speed = 1;
-            if (transform.GetChild(1).name == "BrickWall")
-            {
-                Explosion();
-            }
-            else if (transform.GetChild(1).name == "Stickman_heads_sphere")
-            {
-                StickExpo();
-            }
+            Explosion();
         }
     }
 
-    private void Explosion()
+    protected virtual void Explosion()
     {
-        StartCoroutine(ExplosionTime());
-    }
-    private IEnumerator ExplosionTime()
-    {
-        boxCollider.enabled = false;
-        for (int i = 0; i < transform.GetChild(1).childCount; i++)
-        {
-            transform.GetChild(1).GetChild(i).GetComponent<Rigidbody>().isKinematic = false;
-        }
-        for (int i = 2; i < transform.childCount; i++)
-        {
-            transform.GetChild(i).GetComponent<Animator>().enabled = false;
-        }
-        GameEvent.Expo();
-        yield return new WaitForSeconds(3f);
-        gameObject.SetActive(false);
+        Debug.Log("GİRDİ PLAYER");
     }
 
-    private void StickExpo()
-    {
-        StartCoroutine(StickExpoTime());
-    }
-
-    private IEnumerator StickExpoTime()
-    {            
-        boxCollider.enabled = false;
-        for (int i = 1; i < transform.childCount; i++)
-        {
-            transform.GetChild(i).GetComponent<Animator>().enabled = false;
-        }
-        GameEvent.Expo();
-        yield return new WaitForSeconds(3f);
-        gameObject.SetActive(false);
-    }
 }
