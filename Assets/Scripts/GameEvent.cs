@@ -9,5 +9,6 @@ public static class GameEvent
     public static Action Win;
     public static Action Fail;
     public static Action Expo;
+    public static Action CannonFire;
 }
 
