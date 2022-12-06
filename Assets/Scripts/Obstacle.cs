@@ -34,11 +34,10 @@ public class Obstacle : MonoBehaviour,IInteractable
         {
             GameEvent.Expo();
             boxCollider.enabled = false;
-            counterText.enabled = false;
+            counterText.gameObject.SetActive(false);
             Explosion();
         }
     }
-
     protected virtual void Explosion()
     {
         Debug.Log("GİRDİ PLAYER");

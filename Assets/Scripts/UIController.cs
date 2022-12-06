@@ -50,6 +50,10 @@ public class UIController : MonoBehaviour
         manager.SetGameStage(GameStage.Fail);
     }
 
+    public void NextButton()
+    {
+        SceneManager.LoadScene(0);
+    }
     public void RetryButton()
     {
         SceneManager.LoadScene(0);

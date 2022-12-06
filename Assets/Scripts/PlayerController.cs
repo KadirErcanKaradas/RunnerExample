@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     private ObjectPool pool;
     private Rigidbody rb;
     private Vector3 rotateAmount = new Vector3(0,360,0);
+    private bool shoot = false;
 
     public Transform cannonPos;
 
@@ -58,18 +59,21 @@ public class PlayerController : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
+                Vector3 direction = new Vector3(0,10f,counterNumber);
                 rb.isKinematic = false;
-                rb.velocity = counterNumber * 2 *new Vector3(0,0.4f,1);
+                //rb.velocity = direction * counterNumber;
+                rb.AddForce(direction  ,ForceMode.VelocityChange);
                 counterText.gameObject.SetActive(false);
-                manager.SetGameStage(GameStage.Win);
+
+                shoot = true;
+
             }
         }
-        if (manager.GameStage == GameStage.Win)
+        if (rb.velocity.z <= 4.2f && shoot)
         {
-            if (rb.velocity.z <= 4.2f)
-            {
+            manager.SetGameStage(GameStage.Win);
+            if (manager.GameStage == GameStage.Win)
                 GameEvent.Win();
-            }
         }
     }
 
@@ -120,12 +124,13 @@ public class PlayerController : MonoBehaviour
     {
         explosionParticle.gameObject.SetActive(true);
         explosionParticle.Play();
-        manager.speed = 5;
+        manager.speed = 10;
     }
     
     private void FireCannon()
     {
         manager.SetGameStage(GameStage.Cannon);
+        transform.localScale = Vector3.one;
         transform.DOLocalJump(cannonPos.position, 3, 1, 1);
     }
 }
